@@ -4,10 +4,13 @@
 library(igraph)
 library(googlesheets4)
 library(RColorBrewer)
+library(png)
 
 #gs4_auth() # autentificación, si el archivo es privado
 gs4_deauth() #para correr esto sin autentificación (tiene que ser un archivo compartido, de preferencia, sólo lectura)
 url <- "https://docs.google.com/spreadsheets/d/1_Yzm89LhvoDSFAxL5fh3sYdBXVrfR0qTT6UUGBtk1ok/edit?usp=sharing"
+
+here()
 
 #cargando de cada hoja 
 aristas <- read_sheet(url, sheet = "edges")
@@ -77,5 +80,18 @@ plot.igraph(grafo,
             edge.width = E(grafo)$weight * .20,
             edge.color = "grey",
             layout = layout_with_dh)
+
+png(here("Imagenes", "Grafo.png"), )
+
+
+#Guardando
+
+# dir.create(here("Datos"), showWarnings = FALSE) # Si la carpeta no existe
+write_graph(grafo, here("Datos", "grafo.grahml"), format = "graphml")
+# alternativa para Gephi
+# write_graph(grafo, here("output", "grafo.gml"), format = "gml")
+
+
+dir.create(here("Docs"))
 
 
